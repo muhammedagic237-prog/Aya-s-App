@@ -12,8 +12,31 @@ const notes = [
 
 const countingItems = ['🐻', '⭐', '🫧', '🦋', '🌸', '🧸', '🌈', '🍓', '🐣', '💖']
 
+const cartoonVideos = [
+  {
+    title: 'Little Red Riding Hood',
+    source: 'Public Domain Movie',
+    note: 'Public-domain cartoon stream',
+    poster: 'https://publicdomainmovie.net/wp-content/uploads/2020/04/Little-Red-Riding-Hood-300x225.jpg',
+    src: 'https://publicdomainmovie.net/movie/little-red-riding-hood-1931?download=1',
+  },
+  {
+    title: 'Jack Frost',
+    source: 'Public Domain Movie',
+    note: 'Classic public-domain cartoon',
+    poster: 'https://publicdomainmovie.net/wp-content/uploads/2019/11/Jack-Frost-1934-300x225.jpg',
+    src: 'https://publicdomainmovie.net/movie/jack-frost-1934?download=1',
+  },
+  {
+    title: 'The Cobweb Hotel',
+    source: 'Public Domain Movie',
+    note: 'Gentle vintage cartoon',
+    poster: 'https://publicdomainmovie.net/wp-content/uploads/2020/08/The-Cobweb-Hotel-1936-300x225.jpg',
+    src: 'https://publicdomainmovie.net/movie/the-cobweb-hotel-1936?download=1',
+  },
+]
+
 let currentCount = 3
-let score = 0
 let bubblesPopped = 0
 let audioCtx
 
@@ -23,14 +46,15 @@ app.innerHTML = `
   <main class="app-shell">
     <section class="hero card">
       <div>
-        <p class="eyebrow">For little hands & happy giggles</p>
-        <h1>Aya’s App</h1>
-        <p class="subtitle">A sweet little play space for music, popping bubbles, and learning numbers.</p>
+        <p class="eyebrow">For little hands and happy giggles</p>
+        <h1>Aya's App</h1>
+        <p class="subtitle">A sweet little play space for music, popping bubbles, learning numbers, and watching safe classic cartoons.</p>
       </div>
       <div class="hero-badges">
         <span>🎹 Music</span>
         <span>🫧 Bubbles</span>
         <span>🔢 Counting</span>
+        <span>🎬 Cartoons</span>
       </div>
     </section>
 
@@ -61,7 +85,7 @@ app.innerHTML = `
       <article class="card section-card counting-card">
         <div class="section-header">
           <div>
-            <p class="mini">Numbers & Counting</p>
+            <p class="mini">Numbers and Counting</p>
             <h2>How many can you count?</h2>
           </div>
           <button class="small-btn" id="new-count">New number</button>
@@ -77,6 +101,29 @@ app.innerHTML = `
         </div>
         <p class="feedback" id="count-feedback">Tap the number that matches the picture.</p>
       </article>
+    </section>
+
+    <section class="watch-card card">
+      <div class="section-header watch-header">
+        <div>
+          <p class="mini">Safe Watch Time</p>
+          <h2>Classic cartoons from legal public-domain sources</h2>
+          <p class="watch-note">No sketchy embeds. These are wired from public-domain sources and played inside Aya's App.</p>
+        </div>
+      </div>
+      <div class="watch-layout">
+        <div class="player-panel">
+          <video id="cartoon-player" class="cartoon-player" controls preload="metadata" playsinline poster="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80">
+            <source id="cartoon-source" src="" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="now-playing">
+            <strong id="now-playing-title">Choose a cartoon below</strong>
+            <span id="now-playing-meta">Tap a card to start watching.</span>
+          </div>
+        </div>
+        <div class="cartoon-list" id="cartoon-list"></div>
+      </div>
     </section>
   </main>
 `
@@ -183,11 +230,49 @@ function renderCountingGame() {
   }
 }
 
+function playCartoon(video) {
+  const source = document.querySelector('#cartoon-source')
+  const player = document.querySelector('#cartoon-player')
+  const title = document.querySelector('#now-playing-title')
+  const meta = document.querySelector('#now-playing-meta')
+
+  source.src = video.src
+  player.poster = video.poster
+  player.load()
+  player.play().catch(() => {})
+  title.textContent = video.title
+  meta.textContent = `${video.source} • ${video.note}`
+}
+
+function renderCartoons() {
+  const list = document.querySelector('#cartoon-list')
+  list.innerHTML = ''
+
+  cartoonVideos.forEach((video, index) => {
+    const card = document.createElement('button')
+    card.className = 'cartoon-card'
+    card.innerHTML = `
+      <img src="${video.poster}" alt="${video.title}" />
+      <div>
+        <strong>${video.title}</strong>
+        <span>${video.source}</span>
+        <small>${video.note}</small>
+      </div>
+    `
+    card.addEventListener('click', () => playCartoon(video))
+    list.appendChild(card)
+
+    if (index === 0) {
+      playCartoon(video)
+    }
+  })
+}
+
 function wireEvents() {
   document.querySelector('#reset-bubbles').addEventListener('click', renderBubbles)
   document.querySelector('#new-count').addEventListener('click', renderCountingGame)
 
-  document.querySelector('#play-song').addEventListener('click', async () => {
+  document.querySelector('#play-song').addEventListener('click', () => {
     const tune = [261.63, 293.66, 329.63, 392.0, 440.0, 392.0, 329.63, 293.66, 261.63]
     for (const [index, freq] of tune.entries()) {
       setTimeout(() => playTone(freq, 0.35), index * 280)
@@ -199,13 +284,12 @@ function wireEvents() {
       const answer = Number(btn.dataset.answer)
       const feedback = document.querySelector('#count-feedback')
       if (answer === currentCount) {
-        score += 1
         feedback.textContent = `Yay! That is ${currentCount}! ⭐`
         feedback.className = 'feedback success'
         playTone(523.25, 0.25)
         setTimeout(renderCountingGame, 900)
       } else {
-        feedback.textContent = `Oops, try again sweetie 💕`
+        feedback.textContent = 'Oops, try again sweetie 💕'
         feedback.className = 'feedback'
         playTone(220, 0.2)
       }
@@ -216,4 +300,5 @@ function wireEvents() {
 renderKeyboard()
 renderBubbles()
 renderCountingGame()
+renderCartoons()
 wireEvents()

@@ -7,6 +7,7 @@ A sweet toddler-friendly web app for ages 2–5.
 - Rainbow musical keyboard
 - Bubble popping game
 - Numbers and counting game
+- Safe cartoon watching section using legal public-domain sources
 - Big colorful UI designed for small children
 
 ## Tech
