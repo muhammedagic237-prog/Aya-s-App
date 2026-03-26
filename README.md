@@ -10,7 +10,7 @@ A sweet toddler-friendly web app for ages 2–5.
 - Animated intro splash screen
 - Premium toddler menu with Games and Cartoons sections
 - Bubble Pop mini-game in its own screen with floating bubbles and burst particles
-- Safe cartoon architecture area using legal sources while streaming is refined
+- Bundled cartoon library for manually added in-app videos
 - Big colorful UI designed for small children
 
 ## Tech

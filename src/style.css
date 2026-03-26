@@ -409,6 +409,28 @@ button {
   gap: 18px;
 }
 
+.cartoon-player-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.cartoon-player {
+  width: 100%;
+  min-height: 320px;
+  border-radius: 28px;
+  background: #ffd9ea;
+  box-shadow: 0 16px 28px rgba(156, 107, 141, 0.16);
+}
+
+.now-playing {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff8fc, #eef9ff);
+}
+
 .cartoon-status-card {
   border-radius: 28px;
   padding: 22px;

@@ -1,4 +1,5 @@
 import './style.css'
+import elsaVideo from './videos/elsa-the-snow-queen.mp4'
 
 const notes = [
   { key: 'C', freq: 261.63, color: '#ff8fab' },
@@ -12,24 +13,12 @@ const notes = [
 
 const countingItems = ['🐻', '⭐', '🫧', '🦋', '🌸', '🧸', '🌈', '🍓', '🐣', '💖']
 
-const cartoonVideos = [
+const bundledCartoons = [
   {
-    title: 'Little Red Riding Hood',
-    source: 'External legal source',
-    note: 'Open in a new tab if direct stream blocks in-browser playback.',
-    url: 'https://publicdomainmovie.net/movie/little-red-riding-hood-1931',
-  },
-  {
-    title: 'Jack Frost',
-    source: 'External legal source',
-    note: 'Classic public-domain cartoon page.',
-    url: 'https://publicdomainmovie.net/movie/jack-frost-1934',
-  },
-  {
-    title: 'The Cobweb Hotel',
-    source: 'External legal source',
-    note: 'Public-domain cartoon page.',
-    url: 'https://publicdomainmovie.net/movie/the-cobweb-hotel-1936',
+    title: 'Elsa The Snow Queen',
+    source: 'Bundled video',
+    note: 'Added manually for in-app playback.',
+    src: elsaVideo,
   },
 ]
 
@@ -131,7 +120,7 @@ function render() {
             <button class="menu-button cartoons" data-nav="cartoons">
               <span class="menu-emoji">🎬</span>
               <span class="menu-label">Cartoons</span>
-              <small>Safe watch area and future offline library</small>
+              <small>Bundled videos and safe watch area</small>
             </button>
           </div>
         </section>
@@ -257,20 +246,28 @@ function render() {
             <button class="back-button" data-nav="home">← Back</button>
             <div>
               <p class="eyebrow">Cartoons</p>
-              <h2>Safe watch area</h2>
+              <h2>Watch time</h2>
             </div>
           </div>
 
           <section class="cartoons-panel">
             <div class="cartoon-status-card">
-              <h3>Streaming status</h3>
+              <h3>Bundled cartoon library</h3>
               <p>
-                Direct in-app streaming from public-domain sites is unreliable because many sources do not expose stable CORS-friendly video files.
-                So this version uses a safer architecture: curated legal sources now, with room for a stronger offline/video-library layer next.
+                This screen now uses videos added directly into Aya's App instead of flaky external streaming links.
+                That means playback is much more stable for the cartoons you manually add here.
               </p>
               <div class="cartoon-architecture">
-                <span>Now: legal source links</span>
-                <span>Next: proper hosted/offline library</span>
+                <span>Now: bundled in-app videos</span>
+                <span>Next: add more titles manually</span>
+              </div>
+            </div>
+
+            <div class="cartoon-player-wrap">
+              <video id="cartoon-player" class="cartoon-player" controls playsinline preload="metadata"></video>
+              <div class="now-playing">
+                <strong id="now-playing-title">Choose a cartoon</strong>
+                <span id="now-playing-meta">Tap a video card below to start.</span>
               </div>
             </div>
 
@@ -424,18 +421,28 @@ function startBubbleGame() {
   bubbleTimer = setInterval(spawnBubble, 900)
 }
 
+function playBundledCartoon(video) {
+  const player = document.querySelector('#cartoon-player')
+  const title = document.querySelector('#now-playing-title')
+  const meta = document.querySelector('#now-playing-meta')
+  if (!player || !title || !meta) return
+
+  player.src = video.src
+  player.load()
+  player.play().catch(() => {})
+  title.textContent = video.title
+  meta.textContent = `${video.source} • ${video.note}`
+}
+
 function renderCartoons() {
   const list = document.querySelector('#cartoon-list')
   if (!list) return
 
   list.innerHTML = ''
 
-  cartoonVideos.forEach((video) => {
-    const card = document.createElement('a')
-    card.className = 'cartoon-link-card'
-    card.href = video.url
-    card.target = '_blank'
-    card.rel = 'noreferrer noopener'
+  bundledCartoons.forEach((video, index) => {
+    const card = document.createElement('button')
+    card.className = 'cartoon-link-card bundled-card'
     card.innerHTML = `
       <div class="cartoon-icon">🎞️</div>
       <div>
@@ -443,9 +450,14 @@ function renderCartoons() {
         <span>${video.source}</span>
         <small>${video.note}</small>
       </div>
-      <div class="open-pill">Open</div>
+      <div class="open-pill">Play</div>
     `
+    card.addEventListener('click', () => playBundledCartoon(video))
     list.appendChild(card)
+
+    if (index === 0) {
+      playBundledCartoon(video)
+    }
   })
 }
 
