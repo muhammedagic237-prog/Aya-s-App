@@ -1,5 +1,6 @@
 import './style.css'
 import elsaVideo from './videos/elsa-the-snow-queen.mp4'
+import elsaFrozen2Video from './videos/elsa-the-frozen-queen-2.mp4'
 
 const notes = [
   { key: 'C', freq: 261.63, color: '#ff8fab' },
@@ -19,6 +20,12 @@ const bundledCartoons = [
     source: 'Bundled video',
     note: 'Added manually for in-app playback.',
     src: elsaVideo,
+  },
+  {
+    title: 'Elsa The Frozen Queen 2',
+    source: 'Bundled video',
+    note: 'Added manually for in-app playback.',
+    src: elsaFrozen2Video,
   },
 ]
 
