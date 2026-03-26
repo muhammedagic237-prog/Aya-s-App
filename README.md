@@ -7,7 +7,10 @@ A sweet toddler-friendly web app for ages 2–5.
 - Rainbow musical keyboard
 - Bubble popping game
 - Numbers and counting game
-- Safe cartoon watching section using legal public-domain sources
+- Animated intro splash screen
+- Premium toddler menu with Games and Cartoons sections
+- Bubble Pop mini-game in its own screen with floating bubbles and burst particles
+- Safe cartoon architecture area using legal sources while streaming is refined
 - Big colorful UI designed for small children
 
 ## Tech
