@@ -1,7 +1,7 @@
 :root {
   font-family: 'Baloo 2', system-ui, sans-serif;
   color: #5a4268;
-  background: linear-gradient(180deg, #fff7fb 0%, #ffe9f4 38%, #e7f5ff 100%);
+  background: linear-gradient(180deg, #fff8fc 0%, #ffe9f5 35%, #e9f6ff 100%);
   line-height: 1.4;
   font-weight: 400;
 }
@@ -44,25 +44,25 @@ button {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(circle at top, rgba(255,255,255,0.95), rgba(255, 214, 237, 0.88) 40%, rgba(201, 235, 255, 0.88) 100%);
+    radial-gradient(circle at top, rgba(255,255,255,0.98), rgba(255, 219, 238, 0.9) 38%, rgba(208, 236, 255, 0.88) 100%);
 }
 
 .splash-logo {
   position: relative;
   z-index: 2;
   font-family: 'Baloo 2', cursive;
-  font-size: clamp(3.5rem, 12vw, 7rem);
+  font-size: clamp(3.7rem, 12vw, 7rem);
   line-height: 0.95;
   font-weight: 700;
-  color: #ff5ea9;
-  text-shadow: 0 8px 0 rgba(255,255,255,0.85), 0 18px 30px rgba(255, 122, 182, 0.32);
+  color: #ff58a4;
+  text-shadow: 0 8px 0 rgba(255,255,255,0.9), 0 18px 34px rgba(255, 113, 179, 0.28);
   animation: splashBounce 2.5s ease forwards;
 }
 
 .splash-subtitle {
   position: absolute;
   z-index: 2;
-  bottom: 21%;
+  bottom: 20%;
   text-align: center;
   color: #9c6181;
   font-size: 1.15rem;
@@ -73,7 +73,7 @@ button {
   position: absolute;
   border-radius: 50%;
   filter: blur(1px);
-  opacity: 0.75;
+  opacity: 0.78;
 }
 
 .spark-a {
@@ -104,6 +104,15 @@ button {
   animation: drift 3.8s ease-in-out infinite;
 }
 
+.spark-d {
+  width: 120px;
+  height: 120px;
+  right: 24%;
+  bottom: 20%;
+  background: rgba(202, 255, 191, 0.5);
+  animation: drift 3.2s ease-in-out infinite reverse;
+}
+
 .premium-shell {
   min-height: 100vh;
   padding: 22px;
@@ -115,15 +124,30 @@ button {
 
 .premium-card {
   width: min(1200px, 100%);
-  border-radius: 36px;
-  background: rgba(255, 255, 255, 0.78);
-  border: 3px solid rgba(255,255,255,0.72);
-  box-shadow: 0 24px 60px rgba(204, 146, 180, 0.22);
-  backdrop-filter: blur(14px);
+  border-radius: 38px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 3px solid rgba(255,255,255,0.76);
+  box-shadow: 0 26px 70px rgba(204, 146, 180, 0.22);
+  backdrop-filter: blur(16px);
+}
+
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.34) 22%, transparent 46%);
+  transform: translateX(-120%);
+  animation: sheen 7s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .home-card {
-  padding: 40px 34px;
+  padding: 42px 36px;
   text-align: center;
 }
 
@@ -137,7 +161,7 @@ button {
 
 .premium-title {
   margin: 0;
-  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-size: clamp(3rem, 8vw, 5.6rem);
   line-height: 0.94;
   color: #ff63ac;
   text-shadow: 0 6px 0 rgba(255,255,255,0.85);
@@ -145,71 +169,104 @@ button {
 
 .premium-subtitle {
   margin: 14px auto 0;
-  max-width: 600px;
+  max-width: 640px;
   font-size: 1.2rem;
   color: #86657f;
 }
 
-.menu-buttons {
+.menu-buttons,
+.launch-grid {
   margin-top: 34px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
 }
 
+.launch-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .menu-button,
-.feature-card,
+.launch-card,
 .back-button,
 .small-btn,
 .answer-btn,
-.cartoon-link-card {
+.cartoon-bubble-card,
+.piano-key {
   transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
 }
 
-.menu-button {
+.menu-button,
+.launch-card {
   min-height: 260px;
   border-radius: 34px;
   padding: 24px;
-  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  cursor: pointer;
   box-shadow: 0 20px 36px rgba(177, 117, 161, 0.16);
 }
 
-.menu-button.games {
+.menu-button.games,
+.launch-card.bubble-launch {
   background: linear-gradient(135deg, #ffd5ea, #ffc0dd 48%, #ffe8b3);
 }
 
-.menu-button.cartoons {
+.menu-button.cartoons,
+.launch-card.music-launch {
   background: linear-gradient(135deg, #d8efff, #c6e4ff 48%, #ffe4f3);
 }
 
+.launch-card.counting-launch {
+  background: linear-gradient(135deg, #f6e4ff, #e2d7ff 48%, #fff0c8);
+}
+
 .menu-button:hover,
-.feature-card:hover,
+.launch-card:hover,
 .back-button:hover,
 .small-btn:hover,
 .answer-btn:hover,
-.cartoon-link-card:hover {
+.cartoon-bubble-card:hover,
+.piano-key:hover {
   transform: translateY(-3px) scale(1.01);
 }
 
-.menu-emoji {
+.menu-emoji,
+.launch-emoji {
   font-size: 4rem;
 }
 
-.menu-label {
+.menu-label,
+.launch-card strong {
   font-size: 2rem;
   font-weight: 700;
   color: #7f5070;
 }
 
-.menu-button small {
+.menu-button small,
+.launch-card small {
   font-size: 1rem;
   color: #7e6e84;
+}
+
+.launch-pill,
+.bubble-play-button,
+.back-button,
+.small-btn,
+.answer-btn {
+  border-radius: 18px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #ff9dc8, #ff75b1);
+  color: white;
+  box-shadow: 0 12px 22px rgba(255, 108, 171, 0.2);
+}
+
+.launch-pill,
+.bubble-play-button {
+  margin-top: 10px;
+  font-weight: 700;
 }
 
 .screen-card {
@@ -230,81 +287,60 @@ button {
   color: #7b5ea7;
 }
 
-.back-button,
-.small-btn,
-.answer-btn,
-.open-pill {
-  border-radius: 18px;
-  padding: 12px 18px;
-  background: linear-gradient(135deg, #ff9dc8, #ff75b1);
-  color: white;
-  text-decoration: none;
-  box-shadow: 0 12px 22px rgba(255, 108, 171, 0.2);
-}
-
 .secondary-btn {
   background: linear-gradient(135deg, #97d9ff, #84c9ff);
   color: #35516b;
 }
 
-.game-grid {
+.game-screen {
+  min-height: 82vh;
+}
+
+.music-stage,
+.counting-stage {
+  border-radius: 34px;
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,241,248,0.86));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.55);
+  position: relative;
+}
+
+.music-cloud {
+  position: absolute;
+  top: 18px;
+  right: 28px;
+  font-size: 2rem;
+  background: rgba(255,255,255,0.72);
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
   display: grid;
-  grid-template-columns: 1fr 1.1fr 1fr;
-  gap: 18px;
+  place-items: center;
 }
 
-.feature-card {
-  border: none;
-  border-radius: 30px;
-  padding: 22px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,244,250,0.96));
-  box-shadow: 0 18px 34px rgba(198, 142, 176, 0.15);
-}
-
-.bubble-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 440px;
-  background: linear-gradient(180deg, #e9f8ff, #fff3f9);
-  cursor: pointer;
-}
-
-.feature-headline {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.feature-emoji {
-  font-size: 2.3rem;
-}
-
-.feature-card strong {
-  display: block;
+.music-cloud.alt {
+  right: 98px;
+  top: 68px;
+  width: 46px;
+  height: 46px;
   font-size: 1.4rem;
-  color: #794f74;
-}
-
-.feature-card small {
-  color: #86758a;
 }
 
 .keyboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 14px;
+}
+
+.premium-keyboard {
+  margin-top: 40px;
 }
 
 .piano-key {
-  min-height: 102px;
-  border-radius: 28px;
+  min-height: 128px;
+  border-radius: 30px;
   border: none;
-  box-shadow: inset 0 -8px 0 rgba(255,255,255,0.35), 0 12px 22px rgba(0,0,0,0.08);
+  box-shadow: inset 0 -10px 0 rgba(255,255,255,0.36), 0 16px 28px rgba(0,0,0,0.08);
   color: #5c4367;
   font-size: 2rem;
   display: flex;
@@ -314,50 +350,50 @@ button {
 }
 
 .count-number {
-  font-size: clamp(4rem, 10vw, 5.8rem);
+  font-size: clamp(4rem, 10vw, 6rem);
   color: #ff5ea9;
   line-height: 1;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 .count-items {
-  min-height: 116px;
+  min-height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .count-item {
-  width: 62px;
-  height: 62px;
+  width: 72px;
+  height: 72px;
   display: grid;
   place-items: center;
-  border-radius: 20px;
+  border-radius: 24px;
   background: linear-gradient(135deg, #fff, #fff0f7);
   font-size: 2rem;
-  box-shadow: 0 10px 20px rgba(203, 133, 181, 0.18);
+  box-shadow: 0 12px 24px rgba(203, 133, 181, 0.18);
 }
 
 .count-actions {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .answer-btn {
-  border: none;
-  min-height: 64px;
+  min-height: 68px;
   font-size: 1.5rem;
-  cursor: pointer;
 }
 
 .feedback {
-  margin: 14px 0;
+  margin: 16px 0 0;
   font-size: 1.05rem;
   color: #8a5f76;
+  text-align: center;
 }
 
 .feedback.success {
@@ -365,7 +401,7 @@ button {
 }
 
 .bubble-window {
-  min-height: 82vh;
+  min-height: 84vh;
 }
 
 .bubble-score-panel {
@@ -378,19 +414,69 @@ button {
 
 .bubble-game-stage {
   position: relative;
-  min-height: 68vh;
+  min-height: 70vh;
   overflow: hidden;
-  border-radius: 34px;
-  background: linear-gradient(180deg, #f5fbff, #dff3ff 40%, #ffeef7 100%);
-  box-shadow: inset 0 -24px 60px rgba(255,255,255,0.45);
+  border-radius: 36px;
+  background: linear-gradient(180deg, #f8fdff 0%, #d7f0ff 35%, #d8ebff 65%, #ffeaf5 100%);
+  box-shadow: inset 0 -28px 70px rgba(255,255,255,0.45);
+}
+
+.bubble-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(18px);
+  opacity: 0.48;
+}
+
+.bubble-glow-a {
+  width: 180px;
+  height: 180px;
+  left: 8%;
+  bottom: 6%;
+  background: #ffb6d9;
+}
+
+.bubble-glow-b {
+  width: 220px;
+  height: 220px;
+  right: 10%;
+  top: 12%;
+  background: #8fdcff;
+}
+
+.bubble-glow-c {
+  width: 150px;
+  height: 150px;
+  left: 40%;
+  top: 8%;
+  background: #fff0a8;
 }
 
 .floating-bubble {
   position: absolute;
-  border: 3px solid rgba(255,255,255,0.88);
+  border: 4px solid rgba(255,255,255,0.9);
   border-radius: 50%;
-  box-shadow: inset -12px -14px 18px rgba(255,255,255,0.22), 0 18px 28px rgba(137, 191, 255, 0.2);
+  box-shadow: inset -14px -18px 24px rgba(255,255,255,0.22), 0 18px 34px rgba(104, 168, 255, 0.26), 0 0 0 7px rgba(255,255,255,0.12);
   animation: floatBubble linear forwards;
+}
+
+.bubble-shine {
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  left: 18%;
+  top: 16%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  filter: blur(1px);
+}
+
+.bubble-shine.small {
+  width: 14%;
+  height: 14%;
+  left: 48%;
+  top: 24%;
+  opacity: 0.8;
 }
 
 .bubble-burst {
@@ -400,14 +486,29 @@ button {
   pointer-events: none;
 }
 
+.bubble-ring {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: -12px;
+  top: -12px;
+  border: 4px solid rgba(255,255,255,0.85);
+  border-radius: 999px;
+  animation: ringBurst 0.55s ease-out forwards;
+}
+
 .bubble-particle {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: var(--size);
+  height: var(--size);
   border-radius: 999px;
-  box-shadow: 0 0 10px rgba(255,255,255,0.55);
-  animation: particleBurst 0.58s ease-out forwards;
+  box-shadow: 0 0 14px rgba(255,255,255,0.55);
+  animation: particleBurst 0.78s ease-out forwards;
   animation-delay: var(--delay);
+}
+
+.bubble-particle.star {
+  clip-path: polygon(50% 0%, 62% 35%, 100% 38%, 70% 58%, 79% 100%, 50% 74%, 21% 100%, 30% 58%, 0% 38%, 38% 35%);
 }
 
 .cartoons-panel {
@@ -423,22 +524,22 @@ button {
 .cartoon-player {
   width: 100%;
   min-height: 320px;
-  border-radius: 28px;
+  border-radius: 30px;
   background: #ffd9ea;
-  box-shadow: 0 16px 28px rgba(156, 107, 141, 0.16);
+  box-shadow: 0 18px 34px rgba(156, 107, 141, 0.16);
 }
 
 .now-playing {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 14px 16px;
+  padding: 15px 18px;
   border-radius: 22px;
   background: linear-gradient(135deg, #fff8fc, #eef9ff);
 }
 
 .cartoon-status-card {
-  border-radius: 28px;
+  border-radius: 30px;
   padding: 22px;
   background: linear-gradient(135deg, #fff7fb, #eef8ff);
   box-shadow: 0 16px 30px rgba(186, 133, 170, 0.14);
@@ -466,13 +567,13 @@ button {
 .cartoon-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 
 .cartoon-bubble-card {
   border: none;
   padding: 18px 16px 20px;
-  border-radius: 34px;
+  border-radius: 36px;
   background: linear-gradient(180deg, #fff, #fff0f7 55%, #eaf7ff 100%);
   box-shadow: 0 18px 34px rgba(182, 127, 165, 0.16);
   text-align: center;
@@ -485,13 +586,14 @@ button {
 }
 
 .cartoon-bubble-thumb-wrap {
-  width: 158px;
-  height: 158px;
+  width: 168px;
+  height: 168px;
   margin: 0 auto 14px;
   padding: 7px;
   border-radius: 999px;
   background: linear-gradient(135deg, #ffd8eb, #d7efff, #fff0b3);
   box-shadow: inset 0 0 0 6px rgba(255,255,255,0.55), 0 16px 28px rgba(165, 117, 155, 0.16);
+  position: relative;
 }
 
 .cartoon-bubble-thumb {
@@ -500,6 +602,14 @@ button {
   object-fit: cover;
   border-radius: 999px;
   display: block;
+}
+
+.bubble-play-button {
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .cartoon-bubble-card strong,
@@ -511,6 +621,7 @@ button {
 .cartoon-bubble-card strong {
   color: #7a5172;
   font-size: 1.2rem;
+  margin-top: 12px;
 }
 
 .cartoon-bubble-card span {
@@ -541,19 +652,29 @@ button {
   50% { transform: translateY(-10px) scale(1.05); }
 }
 
+@keyframes sheen {
+  0% { transform: translateX(-120%); }
+  45%, 100% { transform: translateX(220%); }
+}
+
 @keyframes floatBubble {
   from { transform: translateY(0) scale(1); }
-  to { transform: translateY(-110vh) scale(1.08); }
+  to { transform: translateY(-118vh) scale(1.1); }
 }
 
 @keyframes particleBurst {
   0% { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0.15); opacity: 0; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.1); opacity: 0; }
+}
+
+@keyframes ringBurst {
+  0% { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(5.4); opacity: 0; }
 }
 
 @media (max-width: 980px) {
   .menu-buttons,
-  .game-grid {
+  .launch-grid {
     grid-template-columns: 1fr;
   }
 
@@ -570,7 +691,7 @@ button {
   .home-card,
   .screen-card {
     padding: 16px;
-    border-radius: 26px;
+    border-radius: 28px;
   }
 
   .keyboard {
@@ -581,12 +702,12 @@ button {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .cartoon-link-card {
+  .cartoon-list {
     grid-template-columns: 1fr;
-    text-align: center;
   }
 
-  .cartoon-icon {
-    margin: 0 auto;
+  .cartoon-bubble-thumb-wrap {
+    width: 148px;
+    height: 148px;
   }
 }

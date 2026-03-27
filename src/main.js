@@ -60,7 +60,7 @@ function playTone(frequency, duration = 0.45) {
   oscillator.type = 'sine'
   oscillator.frequency.value = frequency
   gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.3, audioCtx.currentTime + 0.03)
+  gainNode.gain.exponentialRampToValueAtTime(0.32, audioCtx.currentTime + 0.03)
   gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration)
 
   oscillator.connect(gainNode)
@@ -71,17 +71,29 @@ function playTone(frequency, duration = 0.45) {
 
 function playPop() {
   ensureAudio()
-  const oscillator = audioCtx.createOscillator()
+
+  const oscillatorA = audioCtx.createOscillator()
+  const oscillatorB = audioCtx.createOscillator()
   const gainNode = audioCtx.createGain()
-  oscillator.type = 'triangle'
-  oscillator.frequency.setValueAtTime(540, audioCtx.currentTime)
-  oscillator.frequency.exponentialRampToValueAtTime(160, audioCtx.currentTime + 0.15)
-  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.16)
-  oscillator.connect(gainNode)
+
+  oscillatorA.type = 'triangle'
+  oscillatorB.type = 'sine'
+  oscillatorA.frequency.setValueAtTime(620, audioCtx.currentTime)
+  oscillatorA.frequency.exponentialRampToValueAtTime(180, audioCtx.currentTime + 0.22)
+  oscillatorB.frequency.setValueAtTime(940, audioCtx.currentTime)
+  oscillatorB.frequency.exponentialRampToValueAtTime(280, audioCtx.currentTime + 0.18)
+
+  gainNode.gain.setValueAtTime(0.24, audioCtx.currentTime)
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2)
+
+  oscillatorA.connect(gainNode)
+  oscillatorB.connect(gainNode)
   gainNode.connect(audioCtx.destination)
-  oscillator.start()
-  oscillator.stop(audioCtx.currentTime + 0.17)
+
+  oscillatorA.start()
+  oscillatorB.start()
+  oscillatorA.stop(audioCtx.currentTime + 0.22)
+  oscillatorB.stop(audioCtx.currentTime + 0.18)
 }
 
 function stopBubbleGame() {
@@ -104,6 +116,7 @@ function render() {
         <div class="spark spark-a"></div>
         <div class="spark spark-b"></div>
         <div class="spark spark-c"></div>
+        <div class="spark spark-d"></div>
         <div class="splash-logo">Aya's App</div>
         <p class="splash-subtitle">Tiny games and sweet little moments</p>
       </section>
@@ -122,21 +135,21 @@ function render() {
     stopBubbleGame()
     app.innerHTML = `
       <main class="premium-shell">
-        <section class="home-card premium-card">
+        <section class="home-card premium-card shimmer-card">
           <p class="eyebrow">Welcome, little star</p>
           <h1 class="premium-title">Aya's App</h1>
-          <p class="premium-subtitle">A soft and playful place for tiny hands.</p>
+          <p class="premium-subtitle">A soft and playful place for tiny hands, cozy cartoons, and sparkly games.</p>
 
           <div class="menu-buttons">
             <button class="menu-button games" data-nav="games">
               <span class="menu-emoji">🎠</span>
               <span class="menu-label">Games</span>
-              <small>Play, tap, pop and learn</small>
+              <small>Open a playful little activity</small>
             </button>
             <button class="menu-button cartoons" data-nav="cartoons">
               <span class="menu-emoji">🎬</span>
               <span class="menu-label">Cartoons</span>
-              <small>Bundled videos and safe watch area</small>
+              <small>Watch her favorite videos</small>
             </button>
           </div>
         </section>
@@ -157,7 +170,7 @@ function render() {
     stopBubbleGame()
     app.innerHTML = `
       <main class="premium-shell">
-        <section class="screen-card premium-card">
+        <section class="screen-card premium-card shimmer-card">
           <div class="topbar">
             <button class="back-button" data-nav="home">← Back</button>
             <div>
@@ -166,45 +179,27 @@ function render() {
             </div>
           </div>
 
-          <div class="game-grid">
-            <button class="feature-card bubble-card" data-nav="bubble-game">
-              <span class="feature-emoji">🫧</span>
+          <div class="launch-grid">
+            <button class="launch-card bubble-launch" data-nav="bubble-game">
+              <span class="launch-emoji">🫧</span>
               <strong>Bubble Pop</strong>
-              <small>Bubbles float up and pop with sparkles.</small>
+              <small>Tap bright floating bubbles and watch them burst into sparkles.</small>
+              <span class="launch-pill">Play</span>
             </button>
 
-            <section class="feature-card keyboard-card">
-              <div class="feature-headline">
-                <span class="feature-emoji">🎹</span>
-                <div>
-                  <strong>Musical Keyboard</strong>
-                  <small>Tap the rainbow notes</small>
-                </div>
-              </div>
-              <div class="keyboard" id="keyboard"></div>
-              <button class="small-btn" id="play-song">Play a little tune</button>
-            </section>
+            <button class="launch-card music-launch" data-nav="music-game">
+              <span class="launch-emoji">🎹</span>
+              <strong>Musical Keyboard</strong>
+              <small>Open a rainbow piano with sweet little notes.</small>
+              <span class="launch-pill">Play</span>
+            </button>
 
-            <section class="feature-card counting-card">
-              <div class="feature-headline">
-                <span class="feature-emoji">🔢</span>
-                <div>
-                  <strong>Counting Time</strong>
-                  <small>Pick the matching number</small>
-                </div>
-              </div>
-              <div class="count-number" id="count-number">3</div>
-              <div class="count-items" id="count-items"></div>
-              <div class="count-actions">
-                <button class="answer-btn" data-answer="1">1</button>
-                <button class="answer-btn" data-answer="2">2</button>
-                <button class="answer-btn" data-answer="3">3</button>
-                <button class="answer-btn" data-answer="4">4</button>
-                <button class="answer-btn" data-answer="5">5</button>
-              </div>
-              <p class="feedback" id="count-feedback">Tap the number that matches the picture.</p>
-              <button class="small-btn secondary-btn" id="new-count">New number</button>
-            </section>
+            <button class="launch-card counting-launch" data-nav="counting-game">
+              <span class="launch-emoji">🔢</span>
+              <strong>Counting Time</strong>
+              <small>Spot the right number with cute little pictures.</small>
+              <span class="launch-pill">Play</span>
+            </button>
           </div>
         </section>
       </main>
@@ -215,21 +210,99 @@ function render() {
       render()
     })
 
-    document.querySelector('[data-nav="bubble-game"]').addEventListener('click', () => {
-      currentScreen = 'bubble-game'
+    document.querySelectorAll('.launch-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        currentScreen = card.dataset.nav
+        render()
+      })
+    })
+
+    return
+  }
+
+  if (currentScreen === 'music-game') {
+    stopBubbleGame()
+    app.innerHTML = `
+      <main class="premium-shell">
+        <section class="screen-card premium-card shimmer-card game-screen">
+          <div class="topbar">
+            <button class="back-button" data-nav="games">← Back</button>
+            <div>
+              <p class="eyebrow">Music Game</p>
+              <h2>Rainbow Keyboard</h2>
+            </div>
+            <button class="small-btn" id="play-song">Play a little tune</button>
+          </div>
+
+          <div class="music-stage">
+            <div class="music-cloud">🎼</div>
+            <div class="music-cloud alt">✨</div>
+            <div class="keyboard premium-keyboard" id="keyboard"></div>
+          </div>
+        </section>
+      </main>
+    `
+
+    document.querySelector('[data-nav="games"]').addEventListener('click', () => {
+      currentScreen = 'games'
       render()
     })
 
     renderKeyboard()
+    document.querySelector('#play-song')?.addEventListener('click', () => {
+      const tune = [261.63, 293.66, 329.63, 392.0, 440.0, 392.0, 329.63, 293.66, 261.63]
+      for (const [index, freq] of tune.entries()) {
+        setTimeout(() => playTone(freq, 0.35), index * 280)
+      }
+    })
+
+    return
+  }
+
+  if (currentScreen === 'counting-game') {
+    stopBubbleGame()
+    app.innerHTML = `
+      <main class="premium-shell">
+        <section class="screen-card premium-card shimmer-card game-screen">
+          <div class="topbar">
+            <button class="back-button" data-nav="games">← Back</button>
+            <div>
+              <p class="eyebrow">Counting Game</p>
+              <h2>How many can you count?</h2>
+            </div>
+            <button class="small-btn secondary-btn" id="new-count">New number</button>
+          </div>
+
+          <div class="counting-stage">
+            <div class="count-number" id="count-number">3</div>
+            <div class="count-items" id="count-items"></div>
+            <div class="count-actions">
+              <button class="answer-btn" data-answer="1">1</button>
+              <button class="answer-btn" data-answer="2">2</button>
+              <button class="answer-btn" data-answer="3">3</button>
+              <button class="answer-btn" data-answer="4">4</button>
+              <button class="answer-btn" data-answer="5">5</button>
+            </div>
+            <p class="feedback" id="count-feedback">Tap the number that matches the picture.</p>
+          </div>
+        </section>
+      </main>
+    `
+
+    document.querySelector('[data-nav="games"]').addEventListener('click', () => {
+      currentScreen = 'games'
+      render()
+    })
+
     renderCountingGame()
-    wireGameEvents()
+    wireCountingEvents()
     return
   }
 
   if (currentScreen === 'bubble-game') {
     app.innerHTML = `
       <main class="premium-shell">
-        <section class="screen-card premium-card bubble-window">
+        <section class="screen-card premium-card shimmer-card bubble-window">
           <div class="topbar">
             <button class="back-button" data-nav="games">← Back</button>
             <div>
@@ -239,7 +312,11 @@ function render() {
             <div class="bubble-score-panel">Popped: <strong id="bubble-score">0</strong></div>
           </div>
 
-          <div class="bubble-game-stage" id="bubble-stage"></div>
+          <div class="bubble-game-stage" id="bubble-stage">
+            <div class="bubble-glow bubble-glow-a"></div>
+            <div class="bubble-glow bubble-glow-b"></div>
+            <div class="bubble-glow bubble-glow-c"></div>
+          </div>
         </section>
       </main>
     `
@@ -257,7 +334,7 @@ function render() {
     stopBubbleGame()
     app.innerHTML = `
       <main class="premium-shell">
-        <section class="screen-card premium-card">
+        <section class="screen-card premium-card shimmer-card">
           <div class="topbar">
             <button class="back-button" data-nav="home">← Back</button>
             <div>
@@ -270,20 +347,19 @@ function render() {
             <div class="cartoon-status-card">
               <h3>Bundled cartoon library</h3>
               <p>
-                This screen now uses videos added directly into Aya's App instead of flaky external streaming links.
-                That means playback is much more stable for the cartoons you manually add here.
+                Cartoons now play only when their own bubble is tapped. Each bubble has a clear play button so it makes more sense to a child.
               </p>
               <div class="cartoon-architecture">
-                <span>Now: bundled in-app videos</span>
-                <span>Next: add more titles manually</span>
+                <span>Tap a bubble</span>
+                <span>Then that video plays</span>
               </div>
             </div>
 
             <div class="cartoon-player-wrap">
               <video id="cartoon-player" class="cartoon-player" controls playsinline preload="none"></video>
               <div class="now-playing">
-                <strong id="now-playing-title">Choose a cartoon</strong>
-                <span id="now-playing-meta">Tap a video card below to start.</span>
+                <strong id="now-playing-title">Choose a cartoon bubble</strong>
+                <span id="now-playing-meta">Tap a play button below to start.</span>
               </div>
             </div>
 
@@ -338,15 +414,8 @@ function renderCountingGame() {
   }
 }
 
-function wireGameEvents() {
+function wireCountingEvents() {
   document.querySelector('#new-count')?.addEventListener('click', renderCountingGame)
-
-  document.querySelector('#play-song')?.addEventListener('click', () => {
-    const tune = [261.63, 293.66, 329.63, 392.0, 440.0, 392.0, 329.63, 293.66, 261.63]
-    for (const [index, freq] of tune.entries()) {
-      setTimeout(() => playTone(freq, 0.35), index * 280)
-    }
-  })
 
   document.querySelectorAll('.answer-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -377,18 +446,25 @@ function createBurst(x, y) {
   burst.style.left = `${x}px`
   burst.style.top = `${y}px`
 
-  for (let i = 0; i < 12; i += 1) {
+  const colors = ['#ffffff', '#ffd6ec', '#bde0fe', '#caffbf', '#ffe0a8', '#e1c7ff', '#ff9ec7', '#8fdcff']
+
+  for (let i = 0; i < 24; i += 1) {
     const particle = document.createElement('span')
-    particle.className = 'bubble-particle'
-    particle.style.setProperty('--dx', `${random(-55, 55)}px`)
-    particle.style.setProperty('--dy', `${random(-70, 30)}px`)
-    particle.style.setProperty('--delay', `${i * 12}ms`)
-    particle.style.background = ['#ffffff', '#ffd6ec', '#bde0fe', '#caffbf', '#ffe0a8'][random(0, 4)]
+    particle.className = i % 3 === 0 ? 'bubble-particle star' : 'bubble-particle'
+    particle.style.setProperty('--dx', `${random(-120, 120)}px`)
+    particle.style.setProperty('--dy', `${random(-135, 55)}px`)
+    particle.style.setProperty('--delay', `${i * 8}ms`)
+    particle.style.setProperty('--size', `${random(10, 22)}px`)
+    particle.style.background = colors[random(0, colors.length - 1)]
     burst.appendChild(particle)
   }
 
+  const ring = document.createElement('div')
+  ring.className = 'bubble-ring'
+  burst.appendChild(ring)
+
   stage.appendChild(burst)
-  setTimeout(() => burst.remove(), 650)
+  setTimeout(() => burst.remove(), 900)
 }
 
 function spawnBubble() {
@@ -396,8 +472,8 @@ function spawnBubble() {
   if (!stage) return
 
   const bubble = document.createElement('button')
-  const size = random(72, 128)
-  const startLeft = random(4, 84)
+  const size = random(88, 142)
+  const startLeft = random(4, 82)
 
   bubble.className = 'floating-bubble'
   bubble.dataset.id = String(bubbleId++)
@@ -406,7 +482,9 @@ function spawnBubble() {
   bubble.style.left = `${startLeft}%`
   bubble.style.bottom = `-${size}px`
   bubble.style.animationDuration = `${random(5, 8)}s`
-  bubble.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.4) 34%, ${['rgba(255, 173, 214, 0.5)', 'rgba(173, 226, 255, 0.5)', 'rgba(255, 226, 167, 0.5)', 'rgba(208, 190, 255, 0.55)'][random(0, 3)]} 72%, rgba(255,255,255,0.1))`
+  bubble.style.background = `radial-gradient(circle at 30% 28%, rgba(255,255,255,0.96), rgba(255,255,255,0.45) 28%, ${['rgba(255, 132, 196, 0.72)', 'rgba(114, 210, 255, 0.72)', 'rgba(255, 218, 122, 0.72)', 'rgba(198, 156, 255, 0.74)', 'rgba(116, 255, 205, 0.72)'][random(0, 4)]} 65%, rgba(255,255,255,0.14))`
+
+  bubble.innerHTML = `<span class="bubble-shine"></span><span class="bubble-shine small"></span>`
 
   bubble.addEventListener('click', () => {
     const rect = bubble.getBoundingClientRect()
@@ -430,11 +508,11 @@ function startBubbleGame() {
   const score = document.querySelector('#bubble-score')
   if (score) score.textContent = '0'
 
-  for (let i = 0; i < 6; i += 1) {
-    setTimeout(spawnBubble, i * 320)
+  for (let i = 0; i < 7; i += 1) {
+    setTimeout(spawnBubble, i * 260)
   }
 
-  bubbleTimer = setInterval(spawnBubble, 900)
+  bubbleTimer = setInterval(spawnBubble, 760)
 }
 
 function warmFirstCartoon() {
@@ -489,6 +567,7 @@ function renderCartoons() {
     card.innerHTML = `
       <div class="cartoon-bubble-thumb-wrap">
         <img class="cartoon-bubble-thumb" src="${video.thumbnail}" alt="${video.title}" />
+        <div class="bubble-play-button">▶ Play</div>
       </div>
       <strong>${video.title}</strong>
       <span>${video.source}</span>
