@@ -18,6 +18,7 @@ const countingItems = ['🐻', '⭐', '🫧', '🦋', '🌸', '🧸', '🌈', '�
 
 const bundledCartoons = [
   {
+    id: 'elsa-snow-queen',
     title: 'Elsa The Snow Queen',
     source: 'Bundled video',
     note: 'Added manually for in-app playback.',
@@ -25,6 +26,7 @@ const bundledCartoons = [
     thumbnail: elsaThumb,
   },
   {
+    id: 'elsa-frozen-queen-2',
     title: 'Elsa The Frozen Queen 2',
     source: 'Bundled video',
     note: 'Added manually for in-app playback.',
@@ -39,6 +41,7 @@ let bubblesPopped = 0
 let audioCtx
 let bubbleTimer = null
 let bubbleId = 0
+let warmedCartoonId = null
 
 const app = document.querySelector('#app')
 
@@ -105,6 +108,8 @@ function render() {
         <p class="splash-subtitle">Tiny games and sweet little moments</p>
       </section>
     `
+
+    warmFirstCartoon()
 
     setTimeout(() => {
       currentScreen = 'home'
@@ -275,7 +280,7 @@ function render() {
             </div>
 
             <div class="cartoon-player-wrap">
-              <video id="cartoon-player" class="cartoon-player" controls playsinline preload="metadata"></video>
+              <video id="cartoon-player" class="cartoon-player" controls playsinline preload="none"></video>
               <div class="now-playing">
                 <strong id="now-playing-title">Choose a cartoon</strong>
                 <span id="now-playing-meta">Tap a video card below to start.</span>
@@ -432,14 +437,39 @@ function startBubbleGame() {
   bubbleTimer = setInterval(spawnBubble, 900)
 }
 
+function warmFirstCartoon() {
+  if (warmedCartoonId) return
+  const first = bundledCartoons[0]
+  if (!first) return
+
+  const video = document.createElement('video')
+  video.preload = 'metadata'
+  video.playsInline = true
+  video.muted = true
+  video.src = first.src
+  video.load()
+  warmedCartoonId = first.id
+}
+
 function playBundledCartoon(video) {
   const player = document.querySelector('#cartoon-player')
   const title = document.querySelector('#now-playing-title')
   const meta = document.querySelector('#now-playing-meta')
+  const cards = document.querySelectorAll('.cartoon-bubble-card')
   if (!player || !title || !meta) return
 
-  player.src = video.src
+  cards.forEach((card) => {
+    card.classList.toggle('active', card.dataset.videoId === video.id)
+  })
+
+  if (player.dataset.videoId !== video.id) {
+    player.pause()
+    player.src = video.src
+    player.dataset.videoId = video.id
+  }
+
   player.poster = video.thumbnail
+  player.preload = 'metadata'
   player.load()
   player.play().catch(() => {})
   title.textContent = video.title
@@ -452,9 +482,10 @@ function renderCartoons() {
 
   list.innerHTML = ''
 
-  bundledCartoons.forEach((video, index) => {
+  bundledCartoons.forEach((video) => {
     const card = document.createElement('button')
     card.className = 'cartoon-bubble-card'
+    card.dataset.videoId = video.id
     card.innerHTML = `
       <div class="cartoon-bubble-thumb-wrap">
         <img class="cartoon-bubble-thumb" src="${video.thumbnail}" alt="${video.title}" />
@@ -465,10 +496,6 @@ function renderCartoons() {
     `
     card.addEventListener('click', () => playBundledCartoon(video))
     list.appendChild(card)
-
-    if (index === 0) {
-      playBundledCartoon(video)
-    }
   })
 }
 
