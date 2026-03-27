@@ -1,7 +1,7 @@
 :root {
   font-family: 'Baloo 2', system-ui, sans-serif;
-  color: #5a4268;
-  background: linear-gradient(180deg, #fff8fc 0%, #ffe9f5 35%, #e9f6ff 100%);
+  color: #efd9f7;
+  background: linear-gradient(180deg, #2f2438 0%, #3f2f4a 35%, #3b3955 100%);
   line-height: 1.4;
   font-weight: 400;
 }
@@ -43,7 +43,7 @@ button {
   place-items: center;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at top, rgba(255,255,255,0.98), rgba(255, 219, 238, 0.9) 38%, rgba(208, 236, 255, 0.88) 100%);
+  background: radial-gradient(circle at top, rgba(109, 78, 124, 0.92), rgba(77, 52, 92, 0.95) 38%, rgba(57, 54, 84, 0.96) 100%);
 }
 
 .splash-logo {
@@ -53,8 +53,8 @@ button {
   font-size: clamp(3.7rem, 12vw, 7rem);
   line-height: 0.95;
   font-weight: 700;
-  color: #ff58a4;
-  text-shadow: 0 8px 0 rgba(255,255,255,0.9), 0 18px 34px rgba(255, 113, 179, 0.28);
+  color: #ff92c9;
+  text-shadow: 0 8px 0 rgba(66, 40, 78, 0.85), 0 18px 34px rgba(255, 113, 179, 0.18);
   animation: splashBounce 2.5s ease forwards;
 }
 
@@ -63,7 +63,7 @@ button {
   z-index: 2;
   bottom: 20%;
   text-align: center;
-  color: #9c6181;
+  color: #e3bfd6;
   font-size: 1.15rem;
   animation: fadeFloat 2.5s ease forwards;
 }
@@ -75,25 +75,25 @@ button {
   opacity: 0.78;
 }
 
-.spark-a { width: 240px; height: 240px; left: 12%; top: 14%; background: rgba(255, 187, 219, 0.55); animation: drift 4s ease-in-out infinite; }
-.spark-b { width: 280px; height: 280px; right: 10%; top: 18%; background: rgba(190, 230, 255, 0.5); animation: drift 4.6s ease-in-out infinite reverse; }
-.spark-c { width: 180px; height: 180px; bottom: 10%; left: 50%; transform: translateX(-50%); background: rgba(255, 233, 169, 0.55); animation: drift 3.8s ease-in-out infinite; }
-.spark-d { width: 120px; height: 120px; right: 24%; bottom: 20%; background: rgba(202, 255, 191, 0.5); animation: drift 3.2s ease-in-out infinite reverse; }
+.spark-a { width: 240px; height: 240px; left: 12%; top: 14%; background: rgba(196, 116, 171, 0.32); animation: drift 4s ease-in-out infinite; }
+.spark-b { width: 280px; height: 280px; right: 10%; top: 18%; background: rgba(125, 148, 210, 0.28); animation: drift 4.6s ease-in-out infinite reverse; }
+.spark-c { width: 180px; height: 180px; bottom: 10%; left: 50%; transform: translateX(-50%); background: rgba(194, 170, 124, 0.26); animation: drift 3.8s ease-in-out infinite; }
+.spark-d { width: 120px; height: 120px; right: 24%; bottom: 20%; background: rgba(172, 205, 191, 0.22); animation: drift 3.2s ease-in-out infinite reverse; }
 
 .premium-shell {
   min-height: 100vh;
   padding: 22px;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at top, rgba(255,255,255,0.95), rgba(255, 236, 246, 0.92) 35%, rgba(231, 245, 255, 0.92) 100%);
+  background: radial-gradient(circle at top, rgba(92, 68, 108, 0.95), rgba(67, 48, 83, 0.94) 35%, rgba(50, 52, 80, 0.95) 100%);
 }
 
 .premium-card {
   width: min(1200px, 100%);
   border-radius: 38px;
-  background: rgba(255, 255, 255, 0.76);
-  border: 3px solid rgba(255,255,255,0.76);
-  box-shadow: 0 26px 70px rgba(204, 146, 180, 0.22);
+  background: rgba(74, 56, 88, 0.78);
+  border: 3px solid rgba(255,255,255,0.08);
+  box-shadow: 0 26px 70px rgba(20, 10, 30, 0.38);
   backdrop-filter: blur(16px);
 }
 
@@ -106,7 +106,7 @@ button {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.34) 22%, transparent 46%);
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.08) 22%, transparent 46%);
   transform: translateX(-120%);
   animation: sheen 7s ease-in-out infinite;
   pointer-events: none;
@@ -121,7 +121,7 @@ button {
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #d0639a;
+  color: #f19ac4;
   font-size: 0.82rem;
 }
 
@@ -129,15 +129,15 @@ button {
   margin: 0;
   font-size: clamp(3rem, 8vw, 5.6rem);
   line-height: 0.94;
-  color: #ff63ac;
-  text-shadow: 0 6px 0 rgba(255,255,255,0.85);
+  color: #ff9fcb;
+  text-shadow: 0 6px 0 rgba(58, 36, 72, 0.85);
 }
 
 .premium-subtitle {
   margin: 14px auto 0;
   max-width: 640px;
   font-size: 1.2rem;
-  color: #86657f;
+  color: #dbc5e3;
 }
 
 .menu-buttons,
@@ -174,10 +174,10 @@ button {
 }
 
 .menu-button.games,
-.launch-card.bubble-launch { background: linear-gradient(135deg, #ffd5ea, #ffc0dd 48%, #ffe8b3); }
+.launch-card.bubble-launch { background: linear-gradient(135deg, #8c5478, #a15f8f 48%, #b58b76); }
 .menu-button.cartoons,
-.launch-card.music-launch { background: linear-gradient(135deg, #d8efff, #c6e4ff 48%, #ffe4f3); }
-.launch-card.counting-launch { background: linear-gradient(135deg, #f6e4ff, #e2d7ff 48%, #fff0c8); }
+.launch-card.music-launch { background: linear-gradient(135deg, #5f668f, #7766a1 48%, #9a6d94); }
+.launch-card.counting-launch { background: linear-gradient(135deg, #735c98, #8c6ca8 48%, #9f7b88); }
 
 .menu-button:hover,
 .launch-card:hover,
@@ -196,13 +196,13 @@ button {
 .launch-card strong {
   font-size: 2rem;
   font-weight: 700;
-  color: #7f5070;
+  color: #fff0f7;
 }
 
 .menu-button small,
 .launch-card small {
   font-size: 1rem;
-  color: #7e6e84;
+  color: #f3dfea;
 }
 
 .launch-pill,
@@ -212,9 +212,9 @@ button {
 .answer-btn {
   border-radius: 18px;
   padding: 12px 18px;
-  background: linear-gradient(135deg, #ff9dc8, #ff75b1);
+  background: linear-gradient(135deg, #d27bb0, #b569a2);
   color: white;
-  box-shadow: 0 12px 22px rgba(255, 108, 171, 0.2);
+  box-shadow: 0 12px 22px rgba(32, 16, 40, 0.28);
 }
 
 .launch-pill,
@@ -230,9 +230,9 @@ button {
   margin-bottom: 18px;
 }
 
-.topbar h2 { margin: 0; color: #7b5ea7; }
+.topbar h2 { margin: 0; color: #f3d0ff; }
 
-.secondary-btn { background: linear-gradient(135deg, #97d9ff, #84c9ff); color: #35516b; }
+.secondary-btn { background: linear-gradient(135deg, #7d8dd1, #6f79c0); color: #f4f5ff; }
 
 .game-screen { min-height: 82vh; }
 
@@ -244,8 +244,8 @@ button {
 .counting-stage {
   border-radius: 34px;
   padding: 20px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,241,248,0.86));
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.55);
+  background: linear-gradient(180deg, rgba(77, 58, 92, 0.82), rgba(64, 49, 84, 0.88));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.08);
   position: relative;
 }
 
@@ -254,7 +254,7 @@ button {
 }
 
 .rainbow-stage {
-  background: linear-gradient(180deg, #fff6fb 0%, #fff0f7 58%, #f7fbff 100%);
+  background: linear-gradient(180deg, #5a4569 0%, #51405e 58%, #474962 100%);
 }
 
 .music-stage-header {
@@ -263,7 +263,7 @@ button {
   gap: 14px;
   justify-content: center;
   margin-bottom: 14px;
-  color: #a28698;
+  color: #f0d6ef;
   font-weight: 700;
   font-size: clamp(1.7rem, 4.5vw, 3rem);
 }
@@ -335,7 +335,7 @@ button {
 
 .count-number {
   font-size: clamp(4rem, 10vw, 6rem);
-  color: #ff5ea9;
+  color: #ff9dcb;
   line-height: 1;
   margin-bottom: 12px;
   text-align: center;
@@ -357,9 +357,9 @@ button {
   display: grid;
   place-items: center;
   border-radius: 24px;
-  background: linear-gradient(135deg, #fff, #fff0f7);
+  background: linear-gradient(135deg, #705377, #5d4968);
   font-size: 2rem;
-  box-shadow: 0 12px 24px rgba(203, 133, 181, 0.18);
+  box-shadow: 0 12px 24px rgba(20, 10, 30, 0.22);
 }
 
 .count-actions {
@@ -373,20 +373,20 @@ button {
 .feedback {
   margin: 16px 0 0;
   font-size: 1.05rem;
-  color: #8a5f76;
+  color: #e4cde1;
   text-align: center;
 }
 
-.feedback.success { color: #2f9c69; }
+.feedback.success { color: #9ae5b8; }
 
 .bubble-window { min-height: 84vh; }
 
 .bubble-score-panel {
-  background: linear-gradient(135deg, #fff, #ffe4f2);
+  background: linear-gradient(135deg, #6a4d78, #7a587e);
   border-radius: 999px;
   padding: 12px 18px;
-  color: #8a5b7b;
-  box-shadow: 0 12px 22px rgba(255, 129, 184, 0.14);
+  color: #f5dff1;
+  box-shadow: 0 12px 22px rgba(18, 10, 24, 0.24);
 }
 
 .bubble-game-stage {
@@ -394,8 +394,8 @@ button {
   min-height: 70vh;
   overflow: hidden;
   border-radius: 36px;
-  background: linear-gradient(180deg, #f8fdff 0%, #d7f0ff 35%, #d8ebff 65%, #ffeaf5 100%);
-  box-shadow: inset 0 -28px 70px rgba(255,255,255,0.45);
+  background: linear-gradient(180deg, #483a57 0%, #3d4966 35%, #4f4564 65%, #5a4157 100%);
+  box-shadow: inset 0 -28px 70px rgba(255,255,255,0.08);
 }
 
 .bubble-glow {
@@ -485,8 +485,8 @@ button {
   width: 100%;
   min-height: 320px;
   border-radius: 30px;
-  background: #ffd9ea;
-  box-shadow: 0 18px 34px rgba(156, 107, 141, 0.16);
+  background: #43354f;
+  box-shadow: 0 18px 34px rgba(18, 10, 24, 0.28);
 }
 
 .now-playing {
@@ -495,7 +495,7 @@ button {
   gap: 6px;
   padding: 15px 18px;
   border-radius: 22px;
-  background: linear-gradient(135deg, #fff8fc, #eef9ff);
+  background: linear-gradient(135deg, #5e486c, #4e566f);
 }
 
 .cartoon-bubble-card {
@@ -555,7 +555,7 @@ button {
 
 .cartoon-bubble-card strong {
   display: block;
-  color: #7a5172;
+  color: #f6e5f3;
   font-size: 1.2rem;
 }
 
