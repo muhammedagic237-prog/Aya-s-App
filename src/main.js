@@ -5,13 +5,14 @@ import elsaThumb from './thumbnails/elsa-the-snow-queen.jpg'
 import elsaFrozen2Thumb from './thumbnails/elsa-the-frozen-queen-2.jpg'
 
 const notes = [
-  { key: 'C', freq: 261.63, color: '#ff8fab' },
-  { key: 'D', freq: 293.66, color: '#ffb3c6' },
-  { key: 'E', freq: 329.63, color: '#cdb4db' },
-  { key: 'F', freq: 349.23, color: '#a2d2ff' },
-  { key: 'G', freq: 392.0, color: '#bde0fe' },
-  { key: 'A', freq: 440.0, color: '#caffbf' },
-  { key: 'B', freq: 493.88, color: '#ffd6a5' },
+  { key: 'C', freq: 261.63, accent: 523.25, color: '#ff8fab', flower: '🌸' },
+  { key: 'D', freq: 293.66, accent: 587.33, color: '#ffb3c6', flower: '🌼' },
+  { key: 'E', freq: 329.63, accent: 659.25, color: '#cdb4db', flower: '🌺' },
+  { key: 'F', freq: 349.23, accent: 698.46, color: '#a2d2ff', flower: '🌷' },
+  { key: 'G', freq: 392.0, accent: 783.99, color: '#bde0fe', flower: '🪻' },
+  { key: 'A', freq: 440.0, accent: 880.0, color: '#caffbf', flower: '🌻' },
+  { key: 'B', freq: 493.88, accent: 987.77, color: '#ffd6a5', flower: '🌹' },
+  { key: 'C2', freq: 523.25, accent: 1046.5, color: '#fdffb6', flower: '🌼' },
 ]
 
 const countingItems = ['🐻', '⭐', '🫧', '🦋', '🌸', '🧸', '🌈', '🍓', '🐣', '💖']
@@ -35,6 +36,11 @@ const bundledCartoons = [
   },
 ]
 
+const lullabyPattern = [
+  261.63, 329.63, 392.0, 523.25, 493.88, 392.0, 329.63, 293.66,
+  261.63, 293.66, 329.63, 392.0, 440.0, 392.0, 329.63, 261.63,
+]
+
 let currentScreen = 'splash'
 let currentCount = 3
 let bubblesPopped = 0
@@ -42,6 +48,8 @@ let audioCtx
 let bubbleTimer = null
 let bubbleId = 0
 let warmedCartoonId = null
+let currentCartoonId = null
+let autoplayTuneTimeouts = []
 
 const app = document.querySelector('#app')
 
@@ -52,21 +60,58 @@ function ensureAudio() {
   if (audioCtx.state === 'suspended') audioCtx.resume()
 }
 
-function playTone(frequency, duration = 0.45) {
+function clearAutoplayTune() {
+  autoplayTuneTimeouts.forEach((id) => clearTimeout(id))
+  autoplayTuneTimeouts = []
+}
+
+function layeredTone(frequency, accent, duration = 0.55) {
   ensureAudio()
-  const oscillator = audioCtx.createOscillator()
-  const gainNode = audioCtx.createGain()
 
-  oscillator.type = 'sine'
-  oscillator.frequency.value = frequency
-  gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.32, audioCtx.currentTime + 0.03)
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration)
+  const now = audioCtx.currentTime
+  const master = audioCtx.createGain()
+  master.gain.setValueAtTime(0.001, now)
+  master.gain.exponentialRampToValueAtTime(0.38, now + 0.04)
+  master.gain.exponentialRampToValueAtTime(0.001, now + duration)
+  master.connect(audioCtx.destination)
 
-  oscillator.connect(gainNode)
-  gainNode.connect(audioCtx.destination)
-  oscillator.start()
-  oscillator.stop(audioCtx.currentTime + duration)
+  const osc1 = audioCtx.createOscillator()
+  const osc2 = audioCtx.createOscillator()
+  const osc3 = audioCtx.createOscillator()
+
+  osc1.type = 'triangle'
+  osc2.type = 'sine'
+  osc3.type = 'sine'
+
+  osc1.frequency.value = frequency
+  osc2.frequency.value = accent
+  osc3.frequency.value = frequency * 2
+
+  const gain1 = audioCtx.createGain()
+  const gain2 = audioCtx.createGain()
+  const gain3 = audioCtx.createGain()
+
+  gain1.gain.value = 0.6
+  gain2.gain.value = 0.22
+  gain3.gain.value = 0.12
+
+  osc1.connect(gain1)
+  osc2.connect(gain2)
+  osc3.connect(gain3)
+  gain1.connect(master)
+  gain2.connect(master)
+  gain3.connect(master)
+
+  osc1.start(now)
+  osc2.start(now)
+  osc3.start(now)
+  osc1.stop(now + duration)
+  osc2.stop(now + duration * 0.9)
+  osc3.stop(now + duration * 0.7)
+}
+
+function playTone(frequency, accent, duration = 0.55) {
+  layeredTone(frequency, accent, duration)
 }
 
 function playPop() {
@@ -109,6 +154,10 @@ function random(min, max) {
 
 function render() {
   app.innerHTML = ''
+
+  if (currentScreen !== 'music-game') {
+    clearAutoplayTune()
+  }
 
   if (currentScreen === 'splash') {
     app.innerHTML = `
@@ -190,7 +239,7 @@ function render() {
             <button class="launch-card music-launch" data-nav="music-game">
               <span class="launch-emoji">🎹</span>
               <strong>Musical Keyboard</strong>
-              <small>Open a rainbow piano with sweet little notes.</small>
+              <small>Open a cheerful piano with flowers and playful sounds.</small>
               <span class="launch-pill">Play</span>
             </button>
 
@@ -229,15 +278,20 @@ function render() {
             <button class="back-button" data-nav="games">← Back</button>
             <div>
               <p class="eyebrow">Music Game</p>
-              <h2>Rainbow Keyboard</h2>
+              <h2>Flower Piano</h2>
             </div>
-            <button class="small-btn" id="play-song">Play a little tune</button>
+            <button class="small-btn" id="play-song">Play 15s tune</button>
           </div>
 
           <div class="music-stage">
             <div class="music-cloud">🎼</div>
             <div class="music-cloud alt">✨</div>
-            <div class="keyboard premium-keyboard" id="keyboard"></div>
+            <div class="flower-row">
+              <span>🌸</span><span>🌼</span><span>🌺</span><span>🌷</span><span>🪻</span><span>🌻</span>
+            </div>
+            <div class="piano-board">
+              <div class="real-piano" id="keyboard"></div>
+            </div>
           </div>
         </section>
       </main>
@@ -249,12 +303,7 @@ function render() {
     })
 
     renderKeyboard()
-    document.querySelector('#play-song')?.addEventListener('click', () => {
-      const tune = [261.63, 293.66, 329.63, 392.0, 440.0, 392.0, 329.63, 293.66, 261.63]
-      for (const [index, freq] of tune.entries()) {
-        setTimeout(() => playTone(freq, 0.35), index * 280)
-      }
-    })
+    document.querySelector('#play-song')?.addEventListener('click', playAutoplayTune)
 
     return
   }
@@ -332,6 +381,8 @@ function render() {
 
   if (currentScreen === 'cartoons') {
     stopBubbleGame()
+    const current = bundledCartoons.find((video) => video.id === currentCartoonId)
+
     app.innerHTML = `
       <main class="premium-shell">
         <section class="screen-card premium-card shimmer-card">
@@ -343,27 +394,16 @@ function render() {
             </div>
           </div>
 
-          <section class="cartoons-panel">
-            <div class="cartoon-status-card">
-              <h3>Bundled cartoon library</h3>
-              <p>
-                Cartoons now play only when their own bubble is tapped. Each bubble has a clear play button so it makes more sense to a child.
-              </p>
-              <div class="cartoon-architecture">
-                <span>Tap a bubble</span>
-                <span>Then that video plays</span>
-              </div>
-            </div>
+          <section class="cartoons-panel bubbles-only-layout">
+            <div class="cartoon-bubbles-stage" id="cartoon-list"></div>
 
             <div class="cartoon-player-wrap">
               <video id="cartoon-player" class="cartoon-player" controls playsinline preload="none"></video>
               <div class="now-playing">
-                <strong id="now-playing-title">Choose a cartoon bubble</strong>
-                <span id="now-playing-meta">Tap a play button below to start.</span>
+                <strong id="now-playing-title">${current ? current.title : 'Choose a cartoon bubble'}</strong>
+                <span id="now-playing-meta">${current ? `${current.source} • ${current.note}` : 'Tap a video bubble below to start.'}</span>
               </div>
             </div>
-
-            <div class="cartoon-list" id="cartoon-list"></div>
           </section>
         </section>
       </main>
@@ -375,6 +415,15 @@ function render() {
     })
 
     renderCartoons()
+
+    if (current) {
+      const player = document.querySelector('#cartoon-player')
+      if (player) {
+        player.src = current.src
+        player.poster = current.thumbnail
+        player.dataset.videoId = current.id
+      }
+    }
   }
 }
 
@@ -384,13 +433,31 @@ function renderKeyboard() {
   keyboard.innerHTML = ''
 
   notes.forEach((note) => {
-    const btn = document.createElement('button')
-    btn.className = 'piano-key'
-    btn.style.background = note.color
-    btn.innerHTML = `<span>${note.key}</span><small>♪</small>`
-    btn.addEventListener('click', () => playTone(note.freq))
-    keyboard.appendChild(btn)
+    const key = document.createElement('button')
+    key.className = 'real-piano-key'
+    key.style.setProperty('--key-color', note.color)
+    key.innerHTML = `
+      <span class="key-flower">${note.flower}</span>
+      <span class="key-note">${note.key}</span>
+    `
+    key.addEventListener('click', () => playTone(note.freq, note.accent, 0.7))
+    keyboard.appendChild(key)
   })
+}
+
+function playAutoplayTune() {
+  clearAutoplayTune()
+  let elapsed = 0
+  let index = 0
+
+  while (elapsed < 15000) {
+    const freq = lullabyPattern[index % lullabyPattern.length]
+    const accent = freq * 2
+    const id = setTimeout(() => playTone(freq, accent, 0.52), elapsed)
+    autoplayTuneTimeouts.push(id)
+    elapsed += 480
+    index += 1
+  }
 }
 
 function renderCountingGame() {
@@ -426,12 +493,12 @@ function wireCountingEvents() {
       if (answer === currentCount) {
         feedback.textContent = `Yay! That is ${currentCount}! ⭐`
         feedback.className = 'feedback success'
-        playTone(523.25, 0.25)
+        playTone(523.25, 1046.5, 0.32)
         setTimeout(renderCountingGame, 900)
       } else {
         feedback.textContent = 'Oops, try again sweetie 💕'
         feedback.className = 'feedback'
-        playTone(220, 0.2)
+        playTone(220, 330, 0.25)
       }
     })
   })
@@ -530,6 +597,7 @@ function warmFirstCartoon() {
 }
 
 function playBundledCartoon(video) {
+  currentCartoonId = video.id
   const player = document.querySelector('#cartoon-player')
   const title = document.querySelector('#now-playing-title')
   const meta = document.querySelector('#now-playing-meta')
@@ -562,16 +630,14 @@ function renderCartoons() {
 
   bundledCartoons.forEach((video) => {
     const card = document.createElement('button')
-    card.className = 'cartoon-bubble-card'
+    card.className = 'cartoon-bubble-card video-only'
     card.dataset.videoId = video.id
     card.innerHTML = `
-      <div class="cartoon-bubble-thumb-wrap">
+      <div class="cartoon-bubble-thumb-wrap giant">
         <img class="cartoon-bubble-thumb" src="${video.thumbnail}" alt="${video.title}" />
-        <div class="bubble-play-button">▶ Play</div>
+        <div class="bubble-play-button giant">▶</div>
       </div>
       <strong>${video.title}</strong>
-      <span>${video.source}</span>
-      <small>${video.note}</small>
     `
     card.addEventListener('click', () => playBundledCartoon(video))
     list.appendChild(card)
