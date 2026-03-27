@@ -1,6 +1,8 @@
 import './style.css'
 import elsaVideo from './videos/elsa-the-snow-queen.mp4'
 import elsaFrozen2Video from './videos/elsa-the-frozen-queen-2.mp4'
+import elsaThumb from './thumbnails/elsa-the-snow-queen.jpg'
+import elsaFrozen2Thumb from './thumbnails/elsa-the-frozen-queen-2.jpg'
 
 const notes = [
   { key: 'C', freq: 261.63, color: '#ff8fab' },
@@ -20,12 +22,14 @@ const bundledCartoons = [
     source: 'Bundled video',
     note: 'Added manually for in-app playback.',
     src: elsaVideo,
+    thumbnail: elsaThumb,
   },
   {
     title: 'Elsa The Frozen Queen 2',
     source: 'Bundled video',
     note: 'Added manually for in-app playback.',
     src: elsaFrozen2Video,
+    thumbnail: elsaFrozen2Thumb,
   },
 ]
 
@@ -435,6 +439,7 @@ function playBundledCartoon(video) {
   if (!player || !title || !meta) return
 
   player.src = video.src
+  player.poster = video.thumbnail
   player.load()
   player.play().catch(() => {})
   title.textContent = video.title
@@ -449,15 +454,14 @@ function renderCartoons() {
 
   bundledCartoons.forEach((video, index) => {
     const card = document.createElement('button')
-    card.className = 'cartoon-link-card bundled-card'
+    card.className = 'cartoon-bubble-card'
     card.innerHTML = `
-      <div class="cartoon-icon">🎞️</div>
-      <div>
-        <strong>${video.title}</strong>
-        <span>${video.source}</span>
-        <small>${video.note}</small>
+      <div class="cartoon-bubble-thumb-wrap">
+        <img class="cartoon-bubble-thumb" src="${video.thumbnail}" alt="${video.title}" />
       </div>
-      <div class="open-pill">Play</div>
+      <strong>${video.title}</strong>
+      <span>${video.source}</span>
+      <small>${video.note}</small>
     `
     card.addEventListener('click', () => playBundledCartoon(video))
     list.appendChild(card)
