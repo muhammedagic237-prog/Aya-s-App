@@ -273,25 +273,22 @@ function render() {
     stopBubbleGame()
     app.innerHTML = `
       <main class="premium-shell">
-        <section class="screen-card premium-card shimmer-card game-screen">
+        <section class="screen-card premium-card shimmer-card game-screen music-screen-card">
           <div class="topbar">
             <button class="back-button" data-nav="games">← Back</button>
             <div>
               <p class="eyebrow">Music Game</p>
-              <h2>Flower Piano</h2>
+              <h2>Tap a key!</h2>
             </div>
             <button class="small-btn" id="play-song">Play 15s tune</button>
           </div>
 
-          <div class="music-stage">
-            <div class="music-cloud">🎼</div>
-            <div class="music-cloud alt">✨</div>
-            <div class="flower-row">
-              <span>🌸</span><span>🌼</span><span>🌺</span><span>🌷</span><span>🪻</span><span>🌻</span>
+          <div class="music-stage rainbow-stage">
+            <div class="music-stage-header">
+              <span class="music-stage-icon">🎵</span>
+              <span class="music-stage-text">Tap a key!</span>
             </div>
-            <div class="piano-board">
-              <div class="real-piano" id="keyboard"></div>
-            </div>
+            <div class="rainbow-piano" id="keyboard"></div>
           </div>
         </section>
       </main>
@@ -434,13 +431,19 @@ function renderKeyboard() {
 
   notes.forEach((note) => {
     const key = document.createElement('button')
-    key.className = 'real-piano-key'
+    key.className = 'rainbow-piano-key'
     key.style.setProperty('--key-color', note.color)
     key.innerHTML = `
-      <span class="key-flower">${note.flower}</span>
-      <span class="key-note">${note.key}</span>
+      <span class="rainbow-key-top-glow"></span>
+      <span class="rainbow-key-emoji">${note.flower}</span>
+      <span class="rainbow-key-note">${note.key}</span>
     `
-    key.addEventListener('click', () => playTone(note.freq, note.accent, 0.7))
+    key.addEventListener('click', () => {
+      key.classList.remove('hit')
+      void key.offsetWidth
+      key.classList.add('hit')
+      playTone(note.freq, note.accent, 0.72)
+    })
     keyboard.appendChild(key)
   })
 }
